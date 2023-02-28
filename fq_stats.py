@@ -4,6 +4,7 @@ import sys
 import argparse
 import gzip
 
+
 def main(args=sys.argv[1:]):
     prsr = argparse.ArgumentParser(
         description="Generate stats from FASTQ format files",
@@ -38,7 +39,7 @@ def main(args=sys.argv[1:]):
         "length": 0,
     }
     for fastq in ns_obj.fastq_files:
-        stats = get_file_stats(fastq, all_stats)
+        get_file_stats(fastq, all_stats)
 
     if ns_obj.length:
         return all_stats["length"]
@@ -62,7 +63,7 @@ def fastq_file_records(fastq):
             if header == "" or header == b"":
                 break
             sequence = fastq_fh.readline()
-            plus = fastq_fh.readline()
+            _ = fastq_fh.readline()
             quality = fastq_fh.readline()
             yield (
                 {
@@ -72,11 +73,13 @@ def fastq_file_records(fastq):
                 }
             )
 
+
 def open_maybe_gzipped(fastq):
-    if fastq[-3:] == '.gz':
+    if fastq[-3:] == ".gz":
         return gzip.open(fastq)
     else:
         return open(fastq)
+
 
 if __name__ == "__main__":
     print(main())
