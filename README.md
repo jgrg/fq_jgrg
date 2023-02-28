@@ -12,6 +12,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## Help
+
+To show the help message:
+
+```sh
+./fq_stats.py --help
+```
+
 ## Run Tests
 
 To run the user acceptance tests:
@@ -19,4 +27,3 @@ To run the user acceptance tests:
 ```sh
 PYTHONPATH=. pytest
 ```
-

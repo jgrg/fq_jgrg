@@ -2,7 +2,7 @@
 
 import sys
 import argparse
-
+import gzip
 
 def main(args=sys.argv[1:]):
     prsr = argparse.ArgumentParser(
@@ -56,10 +56,10 @@ def get_file_stats(fastq, stats):
 
 
 def fastq_file_records(fastq):
-    with open(fastq) as fastq_fh:
+    with open_maybe_gzipped(fastq) as fastq_fh:
         while True:
             header = fastq_fh.readline()
-            if header == "":
+            if header == "" or header == b"":
                 break
             sequence = fastq_fh.readline()
             plus = fastq_fh.readline()
@@ -72,6 +72,11 @@ def fastq_file_records(fastq):
                 }
             )
 
+def open_maybe_gzipped(fastq):
+    if fastq[-3:] == '.gz':
+        return gzip.open(fastq)
+    else:
+        return open(fastq)
 
 if __name__ == "__main__":
     print(main())
